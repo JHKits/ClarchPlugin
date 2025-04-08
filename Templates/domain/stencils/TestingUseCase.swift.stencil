@@ -1,0 +1,14 @@
+{% if author != "nil" and currentDate != "nil" %}
+//
+//  Testing{{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}UseCase.swift
+//  {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}Domain
+//
+{% include "license.stencil" %}
+
+{% endif %}
+import Combine
+import {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}DomainInterface
+
+public final class Testing{{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}UseCase: {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}UseCaseInterface {
+    
+}

@@ -1,0 +1,20 @@
+{% if author != "nil" and currentDate != "nil" %}
+//
+//  Example{{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}View.swift
+//  {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}Feature
+//
+{% include "license.stencil" %}
+
+{% endif %}
+import SwiftUI
+import UIKit
+import {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}FeatureImplementation
+
+@main
+struct Example{{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}View: App {
+    var body: some Scene {
+        WindowGroup {
+            {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}View(viewModel: {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}ViewModel())
+        }
+    }
+}

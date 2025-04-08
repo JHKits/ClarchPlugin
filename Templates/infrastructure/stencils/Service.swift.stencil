@@ -1,0 +1,14 @@
+{% if author != "nil" and currentDate != "nil" %}
+//
+//  {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}Service.swift
+//  {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}Infrastructure
+//
+{% include "license.stencil" %}
+
+{% endif %}
+import Combine
+import {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}DataInterface
+
+public final class {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}Repostiory: {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}RepositoryInterface {
+    
+}

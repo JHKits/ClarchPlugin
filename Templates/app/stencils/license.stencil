@@ -1,0 +1,7 @@
+{% if author != "nil" and currentDate != "nil" %}
+//  Created by {{ author }} on {{ currentDate }}.
+{% if copyrightYear != "nil" and organization != "nil" %}
+//  Copyright © {{ copyrightYear }} {{ organization }}. All rights reserved.
+{% endif %}
+//
+{% endif %}

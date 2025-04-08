@@ -1,0 +1,12 @@
+{% if author != "nil" and currentDate != "nil" %}
+//
+//  {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}DIContainer.swift
+//  {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}DIContainer
+//
+{% include "license.stencil" %}
+
+{% endif %}
+public class {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}DIContainer {
+    public static let shared = {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}DIContainer()
+    private init() { }
+}

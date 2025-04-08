@@ -1,0 +1,27 @@
+{% if author != "nil" and currentDate != "nil" %}
+//
+//  SceneDelegate.swift
+//  {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}
+//
+{% include "license.stencil" %}
+
+{% endif %}
+import UIKit
+
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    func sceneWillEnterForeground(_ scene: UIScene) {
+        
+    }
+    
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        
+    }
+    
+    func sceneWillResignActive(_ scene: UIScene) {
+        
+    }
+    
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        
+    }
+}

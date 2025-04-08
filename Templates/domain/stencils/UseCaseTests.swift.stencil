@@ -1,0 +1,16 @@
+{% if author != "nil" and currentDate != "nil" %}
+//
+//  {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}UseCaseTests.swift
+//  {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}Domain
+//
+{% include "license.stencil" %}
+
+{% endif %}
+import Testing
+import XCTest
+import {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}DomainImplementation
+
+@Suite("{{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}UseCaseTests")
+struct {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}UseCaseTests {
+    @Test func {{ name[0] | lowercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}UseCaseTest() async throws { }
+}

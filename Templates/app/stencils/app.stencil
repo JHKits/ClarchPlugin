@@ -1,0 +1,12 @@
+{% if author != "nil" and currentDate != "nil" %}
+//
+//  Project.swift
+//  Manifests
+//
+{% include "license.stencil" %}
+
+{% endif %}
+@preconcurrency import ProjectDescription
+import ClarchPlugin
+
+nonisolated(unsafe) let project: Project = .app(appName: "{{ name }}")

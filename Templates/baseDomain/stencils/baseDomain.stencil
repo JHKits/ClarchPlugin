@@ -1,0 +1,16 @@
+{% if author != "nil" and currentDate != "nil" %}
+//
+//  Project.swift
+//  Manifests
+//
+{% include "license.stencil" %}
+
+{% endif %}
+@preconcurrency import ProjectDescription
+import ClarchPlugin
+
+{% if name != "" %}
+nonisolated(unsafe) let project: Project = .baseDomain(moduleName: "{{ name }}")
+{% else %}
+nonisolated(unsafe) let project: Project = .baseDomain()
+{% endif %}

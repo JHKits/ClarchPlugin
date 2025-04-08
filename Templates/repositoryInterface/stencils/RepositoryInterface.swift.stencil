@@ -1,0 +1,11 @@
+{% if author != "nil" and currentDate != "nil" %}
+//
+//  {{ repositoryName[0] | uppercase }}{% for i in 1...repositoryName.count %}{{ repositoryName[i] }}{% endfor %}RepositoryInterface.swift
+//  {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}Coordinator
+//
+{% include "license.stencil" %}
+
+{% endif %}
+public protocol {{ repositoryName[0] | uppercase }}{% for i in 1...repositoryName.count %}{{ repositoryName[i] }}{% endfor %}RepositoryInterface {
+
+}

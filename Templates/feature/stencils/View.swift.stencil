@@ -1,0 +1,25 @@
+{% if author != "nil" and currentDate != "nil" %}
+//
+//  {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}View.swift
+//  {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}Feature
+//
+{% include "license.stencil" %}
+
+{% endif %}
+import SwiftUI
+
+public final class {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}ViewModel: ObservableObject {
+    public init() { }
+}
+
+public struct {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}View: View {
+    @ObservedObject var viewModel: {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}ViewModel
+    
+    public init(viewModel: {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}ViewModel){
+        self.viewModel = viewModel
+    }
+    
+    public var body: some View {
+        Text("{{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}View")
+    }
+}

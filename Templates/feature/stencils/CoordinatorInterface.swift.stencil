@@ -1,0 +1,13 @@
+{% if author != "nil" and currentDate != "nil" %}
+//
+//  {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}CoordinatorInterface.swift
+//  {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}Feature
+//
+{% include "license.stencil" %}
+
+{% endif %}
+import SwiftUI
+
+public protocol {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}CoordinatorInterface {
+    var startView: AnyView { get }
+}

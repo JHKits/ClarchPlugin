@@ -1,0 +1,39 @@
+{% if author != "nil" and currentDate != "nil" %}
+//
+//  Project.swift
+//  Manifests
+//
+{% include "license.stencil" %}
+
+{% endif %}
+@preconcurrency import ProjectDescription
+import ClarchPlugin
+
+{% if name != "" %}
+nonisolated(unsafe) let project: Project = .repositoryInterfaces(
+    moduleName: "{{ name }}",
+    {% if repositoryNames != "" %}
+    repositoryTargetNames: [
+    {% for item in repositoryNames|split:"," %}
+        "{{ item }}"{% if not forloop.last %},{% endif %}
+        
+    {% endfor %}
+    ]
+    {% else %}
+    repositoryTargetNames: []
+    {% endif %}
+)
+{% else %}
+nonisolated(unsafe) let project: Project = .repositoryInterfaces(
+    {% if repositoryNames != "" %}
+    repositoryTargetNames: [
+    {% for item in repositoryNames|split:"," %}
+        "{{ item }}"{% if not forloop.last %},{% endif %}
+        
+    {% endfor %}
+    ]
+    {% else %}
+    repositoryTargetNames: []
+    {% endif %}
+)
+{% endif %}
