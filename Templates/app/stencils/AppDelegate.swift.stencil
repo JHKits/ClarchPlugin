@@ -1,7 +1,8 @@
 {% if author != "nil" and currentDate != "nil" %}
 //
-//  AppDelegate.swift
+//  AppDelegate.swift 
 //  {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}
+
 //
 {% include "license.stencil" %}
 

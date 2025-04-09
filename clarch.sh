@@ -86,7 +86,7 @@ function help {
     local spaces=$(printf '%*s' "$padding" '')
     
     echo "╔═══════════════════════════════════════════════════════╗"
-    echo "║             ClarchPlugin Module Generator             ║"
+    echo "║                     ClarchPlugin                      ║"
     echo "╠═══════════════════════════════════════════════════════╣"
     echo "${usage_prefix}${spaces}║"
     echo "╚═══════════════════════════════════════════════════════╝"
@@ -216,7 +216,7 @@ case "${module}" in
   diContainer|coordinator|coordinatorInterface|baseDomain|baseData)
     tuist scaffold $module "${name_option[@]}" "${header_options[@]}"
     ;;
-  app|domain|data|infrastructure|core|shared)
+  app|feature|domain|data|infrastructure|core|shared)
     if [[ ${#name_option[@]} -eq 0 ]]; then
       error_message "--name is required for module \"${module}\""
       help

@@ -63,7 +63,7 @@ public enum LayerModuleType: String, CaseIterable {
         let dependables: Set<LayerModuleType> = switch self {
         case .app: [.diContainer, .coordinatorInterface]
         case .diContainer: Set(LayerModuleType.allCases.filter { ![.app, .diContainer].contains($0) })
-        case .coordinator: [.coordinatorInterface]
+        case .coordinator: [.coordinatorInterface, .feature]
         case .coordinatorInterface: []
         case .feature: [.coordinatorInterface, .domain]
         case .domain: [.baseDomain, .repositoryInterfaces, .data]

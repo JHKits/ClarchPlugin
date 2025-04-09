@@ -150,8 +150,8 @@ extension LayerModule {
                     .repositoryInterfaces,
                     .core,
                     .shared: nil
-            case .feature, .infrastructure: modulePath.appending("Resources")
-            case  .domain, .data: nil
+            case .feature: modulePath.appending("Resources")
+            case  .domain, .data, .infrastructure: nil
             case .baseDomain, .baseData: nil
             }
             
@@ -181,14 +181,14 @@ extension LayerModule {
             case .interface, .coordinator:
                 layerModuleDependencies.map({ layerModuleDependency in
                     if !moduleType.dependableLayerModuleTypes.contains(layerModuleDependency.moduleType) {
-                        fatalError("Invalid layer dependency: this layer is not allowed to depend on the specified layer.")
+                        fatalError("Invalid layer dependency: this layer is not allowed to depend on the specified layer. \n\t\(targetName) -> \(layerModuleDependency.name)")
                     }
                     return layerModuleDependency.toTargetDependency(targetType: .interface)
                 })
             case .diContainer:
                 layerModuleDependencies.map<[[TargetDependency]]> { layerModuleDependency in
                     if !moduleType.dependableLayerModuleTypes.contains(layerModuleDependency.moduleType) {
-                        fatalError("Invalid layer dependency: this layer is not allowed to depend on the specified layer.")
+                        fatalError("Invalid layer dependency: this layer is not allowed to depend on the specified layer. \n\t\(targetName) -> \(layerModuleDependency.name)")
                     }
                     return switch layerModuleDependency.moduleType {
                     case .feature, .domain, .data, .infrastructure: [

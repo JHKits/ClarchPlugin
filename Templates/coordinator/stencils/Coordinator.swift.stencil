@@ -6,6 +6,8 @@
 {% include "license.stencil" %}
 
 {% endif %}
+import SwiftUI
+
 public class {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}Coordinator {
     
     public init() {}

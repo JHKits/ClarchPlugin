@@ -90,7 +90,7 @@ public struct LayerModuleTarget {
         case .app, .diContainer, .coordinator, .coordinatorInterface:
             "\(layerModuleName)"
         case .repositoryInterfaces:
-            fatalError("Use repositoryInterfaceTargetPath for .repositoryInterfaces. (\(layerModuleName))")
+            fatalError("Use repositoryInterfaceName for .repositoryInterfaces. (\(layerModuleName))")
         case .feature, .domain, .data, .infrastructure:
             "\(layerModuleName)\(targetType.rawValue.capitalizedFirst)"
         case .core, .shared:

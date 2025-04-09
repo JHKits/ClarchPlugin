@@ -43,7 +43,18 @@ public struct LayerModuleDependency {
     let moduleName: String
     let moduleType: LayerModuleType
     private let repositoryName: String?
-    
+
+    var name: String {
+        return switch moduleType {
+        case .app: "\(moduleName)"
+        case .diContainer: "\(moduleName)DIContainer"
+        case .repositoryInterfaces:
+            "\(repositoryName ?? "")RepositoryInterface"
+        case .core, .shared: "\(moduleType.rawValue.capitalizedFirst)\(moduleName)"
+        default: "\(moduleName)\(moduleType.rawValue.capitalizedFirst)"
+        }
+    }
+
     public init(moduleName: String, moduleType: LayerModuleType) {
         self.moduleName = moduleName.capitalizedFirst
         self.moduleType = moduleType

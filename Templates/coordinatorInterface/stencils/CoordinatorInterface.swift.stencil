@@ -6,6 +6,8 @@
 {% include "license.stencil" %}
 
 {% endif %}
+import SwiftUI
+
 public protocol AppCoordinatorInterface: AnyObject {
     var startView: AnyView { get }
 }
