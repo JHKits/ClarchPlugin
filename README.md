@@ -140,7 +140,7 @@ In your Tuist/Config.swift file:
 // Example
 let config = Config(
     plugins: [
-        .git(url: "https://github.com/JHKits/ClarchPlugin", tag: "1.0.0") // ClarchPlugin
+        .git(url: "https://github.com/JHKits/ClarchPlugin", tag: "1.1.0") // ClarchPlugin
     ],
     generationOptions: .options()
 )
@@ -277,7 +277,7 @@ nonisolated(unsafe) let project: Project = .coordinatorInterface(moduleName: "na
 Represents a business feature or user-facing functionality. It typically includes Interface, Implementation, Example, and Resources directories.
 
 directory: `Feature/{{ name }}Feature`  
-use: `/Interface/Sources`, `/Implementation/Sources`, `/Implementation/Resources`, `/Testing/Sources`, `Tests/Sources`, `/Example/Sources`,
+use: `/Interface/Sources`, `/Implementation/Sources`, `/Implementation/Resources`, `/Testing/Sources`, `Tests/Sources`, `/Example/Sources`  
 dependable: `.coordinatorInterface`, `.domain`
 
 ```swift
@@ -301,7 +301,7 @@ Contains the core business logic, such as use cases and domain entities, separat
 
 directory: `Domain/{{ name }}Domain`  
 use: `/Interface/Sources`, `/Implementation/Sources`, `/Testing/Sources`, `Tests/Sources`  
-dependable: `.baseDomain`, `.repositoryInterfaces`, `.data`
+dependable: `.baseDomain`, `.repositoryInterfaces`
 
 ```swift
 @preconcurrency import ProjectDescription
