@@ -43,13 +43,13 @@ let dataTemplate = Template(
               templatePath: "./stencils/data.stencil"),
         
         // Base Source Files
-        .file(path: "\(dataBasePathString)/Interface/\(dataCapitalizedName)RepositoryInterface.swift",
+        .file(path: "\(dataBasePathString)/Interface/Sources/\(dataCapitalizedName)RepositoryInterface.swift",
               templatePath: "./stencils/RepositoryInterface.swift.stencil"),
-        .file(path: "\(dataBasePathString)/Implementation/\(dataCapitalizedName)Repository.swift",
+        .file(path: "\(dataBasePathString)/Implementation/Sources/\(dataCapitalizedName)Repository.swift",
               templatePath: "./stencils/Repository.swift.stencil"),
-        .file(path: "\(dataBasePathString)/Testing/Testing\(dataCapitalizedName)Repository.swift",
-              templatePath: "./stencils/TestingRepository.swift.stencil"),
-        .file(path: "\(dataBasePathString)/UnitTests/\(dataCapitalizedName)RepositoryTests.swift",
+        .file(path: "\(dataBasePathString)/Testing/Sources/Testing\(dataCapitalizedName)Service.swift",
+              templatePath: "./stencils/TestingService.swift.stencil"),
+        .file(path: "\(dataBasePathString)/Tests/Sources/\(dataCapitalizedName)RepositoryTests.swift",
               templatePath: "./stencils/RepositoryTests.swift.stencil"),
     ]
 )

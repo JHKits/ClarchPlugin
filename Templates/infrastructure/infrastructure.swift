@@ -47,9 +47,7 @@ let infrastructureTemplate = Template(
               templatePath: "./stencils/ServiceInterface.swift.stencil"),
         .file(path: "\(infrastructureBasePathString)/Implementation/\(infrastructureCapitalizedName)Service.swift",
               templatePath: "./stencils/Service.swift.stencil"),
-        .file(path: "\(infrastructureBasePathString)/Testing/Testing\(infrastructureCapitalizedName)Service.swift",
-              templatePath: "./stencils/TestingService.swift.stencil"),
-        .file(path: "\(infrastructureBasePathString)/UnitTests/\(infrastructureCapitalizedName)ServiceTests.swift",
+        .file(path: "\(infrastructureBasePathString)/Tests/\(infrastructureCapitalizedName)ServiceTests.swift",
               templatePath: "./stencils/ServiceTests.swift.stencil"),
     ]
 )

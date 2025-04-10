@@ -42,7 +42,7 @@ let repositoryInterfaceTemplate = Template(
     ],
     items: [
         // Base Source Files
-        .file(path: "\(repositoryInterfaceBasePathString)/\(repositoryInterfaceRepositoryCapitalizedName)RepositoryInterface.swift",
+        .file(path: "\(repositoryInterfaceBasePathString)/Sources/\(repositoryInterfaceRepositoryCapitalizedName)RepositoryInterface.swift",
               templatePath: "./stencils/RepositoryInterface.swift.stencil")
     ]
 )

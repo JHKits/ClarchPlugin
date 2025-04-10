@@ -9,6 +9,7 @@
 import Testing
 import XCTest
 import {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}DataImplementation
+import {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}DataTesting
 
 @Suite("{{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}RepositoryTests")
 struct {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}RepositoryTests {

@@ -43,19 +43,23 @@ let featureTemplate = Template(
               templatePath: "./stencils/feature.stencil"),
         
         // Base Source Files
-        .file(path: "\(featureBasePathString)/Interface/\(featureCapitalizedName)CoordinatorInterface.swift",
+        .file(path: "\(featureBasePathString)/Interface/Sources/\(featureCapitalizedName)CoordinatorInterface.swift",
               templatePath: "./stencils/CoordinatorInterface.swift.stencil"),
-        .file(path: "\(featureBasePathString)/Interface/\(featureCapitalizedName)CoordinatorDestination.swift",
+        .file(path: "\(featureBasePathString)/Interface/Sources/\(featureCapitalizedName)CoordinatorDestination.swift",
               templatePath: "./stencils/CoordinatorDestination.swift.stencil"),
-        .file(path: "\(featureBasePathString)/Implementation/\(featureCapitalizedName)Coordinator.swift",
+        .file(path: "\(featureBasePathString)/Implementation/Sources/\(featureCapitalizedName)Coordinator.swift",
                   templatePath: "./stencils/Coordinator.swift.stencil"),
-        .file(path: "\(featureBasePathString)/Implementation/\(featureCapitalizedName)View.swift",
+        .file(path: "\(featureBasePathString)/Implementation/Sources/\(featureCapitalizedName)View.swift",
               templatePath: "./stencils/View.swift.stencil"),
-        .file(path: "\(featureBasePathString)/Example/Example\(featureCapitalizedName)View.swift",
+        .file(path: "\(featureBasePathString)/Testing/Sources/Testing\(featureCapitalizedName)UseCase.swift",
+              templatePath: "./stencils/TestingUseCase.swift.stencil"),
+        .file(path: "\(featureBasePathString)/Tests/Sources/\(featureCapitalizedName)FeatureTests.swift",
+              templatePath: "./stencils/FeatureTests.swift.stencil"),
+        .file(path: "\(featureBasePathString)/Example/Sources/Example\(featureCapitalizedName)View.swift",
                   templatePath: "./stencils/ExampleView.swift.stencil"),
         
         // Base Resource Files
-        .string(path: "\(featureBasePathString)/Resources/empty.swift",
+        .string(path: "\(featureBasePathString)/Implementation/Resources/empty.swift",
                 contents: "// Resource")
     ]
 )

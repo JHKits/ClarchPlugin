@@ -35,18 +35,6 @@ public enum LayerModuleType: String, CaseIterable {
     case shared
     
     // MARK: - Computed Vars
-    public var bundleIdDescription: String {
-        return switch self {
-        case .app, .diContainer, .coordinator, .coordinatorInterface: "app"
-        case .feature: "feature"
-        case .domain, .repositoryInterfaces, .baseDomain: "domain"
-        case .data, .baseData: "data"
-        case .infrastructure: "infrastructure"
-        case .core: "core"
-        case .shared: "shared"
-        }
-    }
-    
     public var directoryName: String {
         return switch self {
         case .app, .diContainer, .coordinator, .coordinatorInterface: "App"
@@ -59,6 +47,10 @@ public enum LayerModuleType: String, CaseIterable {
         }
     }
     
+    public var bundleIdDescription: String {
+        return directoryName.lowercased()
+    }
+    
     public var dependableLayerModuleTypes: Set<LayerModuleType> {
         let dependables: Set<LayerModuleType> = switch self {
         case .app: [.diContainer, .coordinatorInterface]
@@ -66,8 +58,8 @@ public enum LayerModuleType: String, CaseIterable {
         case .coordinator: [.coordinatorInterface, .feature]
         case .coordinatorInterface: []
         case .feature: [.coordinatorInterface, .domain]
-        case .domain: [.baseDomain, .repositoryInterfaces, .data]
-        case .repositoryInterfaces: []
+        case .domain: [.baseDomain, .repositoryInterfaces]
+        case .repositoryInterfaces: [.baseDomain]
         case .baseDomain: []
         case .data: [.baseData, .repositoryInterfaces, .infrastructure]
         case .baseData: []
@@ -80,16 +72,16 @@ public enum LayerModuleType: String, CaseIterable {
     public var layerModuleTargets: Set<LayerModuleTargetType> {
         return switch self {
         case .app: [.app]
-        case .diContainer: [.diContainer]
-        case .coordinator: [.coordinator]
-        case .coordinatorInterface: [.coordinatorInterface]
-        case .feature: [.interface, .implementation, .example]
-        case .domain: [.interface, .implementation, .testing, .unitTests]
-        case .repositoryInterfaces: [.repositoryInterface]
+        case .diContainer: [.sources]
+        case .coordinator: [.sources]
+        case .coordinatorInterface: [.sources]
+        case .feature: [.interface, .implementation, .testing, .tests, .example]
+        case .domain: [.interface, .implementation, .testing, .tests]
+        case .repositoryInterfaces: [.sources]
         case .baseDomain: [.sources]
-        case .data: [.interface, .implementation, .testing, .unitTests]
+        case .data: [.interface, .implementation, .testing, .tests]
         case .baseData: [.sources]
-        case .infrastructure: [.interface, .implementation, .testing, .unitTests]
+        case .infrastructure: [.interface, .implementation, .tests]
         case .core: [.sources]
         case .shared: [.sources]
         }

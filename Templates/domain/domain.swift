@@ -43,13 +43,13 @@ let domainTemplate = Template(
               templatePath: "./stencils/domain.stencil"),
         
         // Base Source Files
-        .file(path: "\(domainBasePathString)/Interface/\(domainCapitalizedName)UseCaseInterface.swift",
+        .file(path: "\(domainBasePathString)/Interface/Sources/\(domainCapitalizedName)UseCaseInterface.swift",
               templatePath: "./stencils/UseCaseInterface.swift.stencil"),
-        .file(path: "\(domainBasePathString)/Implementation/\(domainCapitalizedName)UseCase.swift",
+        .file(path: "\(domainBasePathString)/Implementation/Sources/\(domainCapitalizedName)UseCase.swift",
               templatePath: "./stencils/UseCase.swift.stencil"),
-        .file(path: "\(domainBasePathString)/Testing/Testing\(domainCapitalizedName)UseCase.swift",
-              templatePath: "./stencils/TestingUseCase.swift.stencil"),
-        .file(path: "\(domainBasePathString)/UnitTests/\(domainCapitalizedName)UseCaseTests.swift",
+        .file(path: "\(domainBasePathString)/Testing/Sources/Testing\(domainCapitalizedName)UseCase.swift",
+              templatePath: "./stencils/TestingRepository.swift.stencil"),
+        .file(path: "\(domainBasePathString)/Tests/Sources/\(domainCapitalizedName)UseCaseTests.swift",
               templatePath: "./stencils/UseCaseTests.swift.stencil"),
     ]
 )

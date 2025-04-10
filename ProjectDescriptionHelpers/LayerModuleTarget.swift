@@ -8,34 +8,44 @@
 import ProjectDescription
 
 
-public enum LayerModuleTargetType: String, CaseIterable {
+public enum LayerModuleTargetType: Hashable {
     case app
-    case coordinator
-    case coordinatorInterface
-    case diContainer
-    case repositoryInterface
     case sources
+    case repositoryInterface(_ repositoryName: String)
     
     case interface
     case implementation
     case testing
     case example
-    case uiTests
-    case unitTests
+    case tests
     
-    // MARK: - Computed Vars
-    public var directoryName: String {
-        return self.rawValue.capitalizedFirst
+    public var rawValue: String {
+        return switch self {
+        case .app: "app"
+        case .sources: "sources"
+        case let .repositoryInterface(repositoryName): "\(repositoryName.lowercasedFirst)RepositoryInterface"
+        case .interface: "interface"
+        case .implementation: "implementation"
+        case .testing: "testing"
+        case .example: "example"
+        case .tests: "tests"
+        }
+    }
+    
+    public var directoryName: String? {
+        switch self {
+        case .app, .sources: nil
+        default: self.rawValue.capitalizedFirst
+        }
     }
     
     public var product: Product {
         return switch self {
         case .app: .app
-        case .diContainer, .coordinator, .coordinatorInterface, .repositoryInterface: .staticFramework
+        case .repositoryInterface: .staticFramework
         case .interface, .implementation, .testing: .staticFramework
         case .example: .app
-        case .uiTests: .uiTests
-        case .unitTests: .unitTests
+        case .tests: .unitTests
         case .sources: .staticFramework
         }
     }
@@ -43,22 +53,34 @@ public enum LayerModuleTargetType: String, CaseIterable {
     public var targetTypeDependences: [LayerModuleTargetType] {
         return switch self {
         case .app: []
-        case .diContainer, .coordinator, .coordinatorInterface, .repositoryInterface: []
         case .interface: []
         case .implementation: [.interface]
         case .testing: [.interface]
-        case .example: [.implementation]
-        case .uiTests: [.testing, .implementation]
-        case .unitTests: [.testing, .implementation]
+        case .example: [.implementation, .testing]
+        case .tests: [.implementation, .testing]
+        case .repositoryInterface: []
         case .sources: []
         }
     }
     
     public var bundleIdDescription: String? {
-        switch self{
-        case .app, .diContainer, .coordinator, .coordinatorInterface, .repositoryInterface, .sources: nil
+        return switch self {
+        case .app, .sources: nil
         default:
             self.rawValue.lowercased()
+        }
+    }
+    
+    public func toSelection() -> LayerModuleTargetSelection {
+        return switch self {
+        case .app: .app
+        case .sources: .sources
+        case let .repositoryInterface(repositoryName): .repositoryInterface(repositoryName)
+        case .interface: .interface
+        case .implementation: .implementation
+        case .testing: .testing
+        case .example: .example
+        case .tests: .tests
         }
     }
 }
@@ -68,15 +90,15 @@ public struct LayerModuleTarget {
     let moduleType: LayerModuleType
     let targetType: LayerModuleTargetType
     
-    init(_ moduleName: String,
-         moduleType: LayerModuleType,
-         targetType: LayerModuleTargetType) {
+    public init(_ moduleName: String,
+                moduleType: LayerModuleType,
+                targetType: LayerModuleTargetType) {
         self.moduleName = moduleName
         self.moduleType = moduleType
         self.targetType = targetType
     }
     
-    private var layerModuleName: String {
+    var layerModuleName: String {
         switch moduleType {
         case .app: "\(moduleName)"
         case .diContainer: "\(moduleName)DIContainer"
@@ -86,93 +108,147 @@ public struct LayerModuleTarget {
     }
     
     var name: String {
-        return switch moduleType {
-        case .app, .diContainer, .coordinator, .coordinatorInterface:
-            "\(layerModuleName)"
-        case .repositoryInterfaces:
-            fatalError("Use repositoryInterfaceName for .repositoryInterfaces. (\(layerModuleName))")
-        case .feature, .domain, .data, .infrastructure:
+        return switch targetType {
+        case .app, .sources: "\(layerModuleName)"
+        case .repositoryInterface: targetType.rawValue.capitalizedFirst
+        default:
             "\(layerModuleName)\(targetType.rawValue.capitalizedFirst)"
-        case .core, .shared:
-            "\(layerModuleName)"
-        case .baseDomain, .baseData:"\(layerModuleName)"
         }
     }
     
     var modulePath: ProjectDescription.Path {
-        let dirs = switch moduleType {
-        case .app, .diContainer, .coordinator, .coordinatorInterface:
-            [moduleType.directoryName, layerModuleName]
-        case .repositoryInterfaces:
-            fatalError("Use repositoryInterfaceTargetPath for .repositoryInterfaces. (\(layerModuleName))")
-        case .feature, .domain, .data, .infrastructure, .core, .shared, .baseDomain, .baseData:
-            [moduleType.directoryName,
-             layerModuleName]
-        }
+        let dirs = [moduleType.directoryName, layerModuleName]
         return .relativeToRoot(dirs.joined(separator: "/"))
     }
     
     var path: ProjectDescription.Path {
-        switch moduleType {
-        case .app, .diContainer, .coordinator, .coordinatorInterface, .core, .shared, .baseDomain, .baseData:
-            return modulePath
-        case .repositoryInterfaces:
-            fatalError("Use repositoryInterfaceTargetPath for .repositoryInterfaces. (\(layerModuleName))")
-        case .feature, .domain, .data, .infrastructure:
-            return modulePath.appending(targetType.directoryName)
+        if let directoryName = targetType.directoryName {
+            return modulePath.appending(directoryName)
+        }
+        return modulePath
+    }
+    
+    // MARK: - For Target
+    private func defaultBundleId(appName: String? = nil,
+                                 organizationName: String? = nil) -> String {
+        return [
+            organizationName,
+            appName,
+            moduleType.bundleIdDescription,
+            moduleName,
+            targetType.bundleIdDescription
+        ]
+            .compactMap{ !($0?.isEmpty ?? true) ? $0 : nil }
+            .joined(separator: ".")
+            .lowercased()
+    }
+    
+    private func defaultSourceFileGlob() -> ProjectDescription.SourceFileGlob {
+        return .glob(path.appending("Sources/**"))
+    }
+    
+    private func defaultResourceFileElement() -> ProjectDescription.ResourceFileElement? {
+        return switch moduleType {
+        case .app:
+                .glob(
+                    pattern: path.appending("Resources/**"),
+                    excluding: [path.appending("Resources/Info.plist")]
+                )
+        case .feature:
+            switch targetType {
+            case .implementation: .glob(
+                pattern: path.appending("Resources/**"),
+                excluding: [path.appending("Resources/Info.plist")]
+            )
+            default: nil
+            }
+            
+        default: nil
         }
     }
     
-    func repositoryInterfaceName(repositoryName: String) -> String {
-        guard moduleType == .repositoryInterfaces else {
-            fatalError("Only used for .repositoryInterfaces (\(layerModuleName))")
+    public func toTarget(
+        appName: String? = nil,
+        organizationName: String? = nil,
+        options: LayerModuleTargetOption = .init(),
+        layerModuleDependencies: [LayerModuleDependency] = [],
+        targetDependencies: [TargetDependency] = []) -> Target {
+            // BundleId
+            let bundleId = options.bundleId ?? defaultBundleId(appName: appName,
+                                                               organizationName: organizationName)
+            
+            // Sources
+            let sources: SourceFilesList = .sourceFilesList(globs: [
+                defaultSourceFileGlob()
+            ] + (options.additionalSources ?? []))
+            
+            // Resources
+            let resources: ResourceFileElements = .resources(
+                [defaultResourceFileElement()].compactMap { $0 }
+                + (options.additionalResources ?? []))
+            
+            // Dependencies
+            let architectureTargetTypeDenpendencies = targetType.targetTypeDependences
+            
+            let architectureTargetDependencies: [TargetDependency] = architectureTargetTypeDenpendencies.map { targetTypeDependency in
+                guard moduleType.layerModuleTargets.contains(targetTypeDependency) else {
+                    return nil
+                }
+                let dependLayerModuleTarget = LayerModuleTarget(moduleName,
+                                                                moduleType: moduleType,
+                                                                targetType: targetTypeDependency)
+                return .target(name: dependLayerModuleTarget.name,
+                               condition: nil)
+            }
+                .compactMap { $0 }
+            
+            let layerModuleTargetDependencies: [TargetDependency] = switch moduleType {
+            case .diContainer:
+                layerModuleDependencies
+                    .map{ $0.toDIContainrTargetDependencies() }
+                    .flatMap { $0 }
+            default:
+                switch targetType {
+                case .app, .sources, .interface, .repositoryInterface:
+                    layerModuleDependencies
+                        .map{ $0.toTargetDependency() }
+                case .tests:
+                    layerModuleDependencies
+                        .map{ $0.toTestsTargetDependencies() }
+                        .flatMap { $0 }
+                default: []
+                }
+            }
+            
+            let dependencies = [
+                architectureTargetDependencies,
+                layerModuleTargetDependencies,
+                targetDependencies
+            ].flatMap { $0 }
+            
+            return .target(name: name,
+                           destinations: options.destinations,
+                           product: targetType.product,
+                           productName: options.productName,
+                           bundleId: bundleId,
+                           deploymentTargets: options.deploymentTargets,
+                           infoPlist: options.infoPlist,
+                           sources: sources,
+                           resources: resources,
+                           copyFiles: options.copyFiles,
+                           headers: options.headers,
+                           entitlements: options.entitlements,
+                           scripts: options.scripts,
+                           dependencies: dependencies,
+                           settings: options.settings,
+                           coreDataModels: options.coreDataModels,
+                           environmentVariables: options.environmentVariables,
+                           launchArguments: options.launchArguments,
+                           additionalFiles: options.additionalFiles,
+                           buildRules: options.buildRules,
+                           mergedBinaryType: options.mergedBinaryType,
+                           mergeable: options.mergeable)
         }
-        return "\(repositoryName)RepositoryInterface"
-    }
-    
-    func repositoryInterfacePath(repositoryName: String) -> Path {
-        guard moduleType == .repositoryInterfaces else {
-            fatalError("Only used for .repositoryInterfaces (\(layerModuleName))")
-        }
-        let dirs = [moduleType.directoryName,
-                    layerModuleName,
-                    repositoryInterfaceName(repositoryName: repositoryName)]
-        return .relativeToRoot(dirs.joined(separator: "/"))
-    }
-}
-
-public enum LayerModuleTargetOptionType {
-    case `default`
-    case app
-    case coordinator
-    case coordinatorInterface
-    case diContainer
-    case repositoryInterface
-    case sources
-    
-    case interface
-    case implementation
-    case testing
-    case example
-    case uiTests
-    case unitTests
-    
-    static func targetTypeToOptionType(_ targetType: LayerModuleTargetType) -> Self {
-        return switch targetType {
-        case .app: .app
-        case .coordinator: .coordinator
-        case .coordinatorInterface: .coordinatorInterface
-        case .diContainer: .diContainer
-        case .repositoryInterface: .repositoryInterface
-        case .sources: .sources
-        case .interface: .interface
-        case .implementation: .implementation
-        case .testing: .testing
-        case .example: .example
-        case .uiTests: .uiTests
-        case .unitTests: .unitTests
-        }
-    }
 }
 
 public struct LayerModuleTargetOption {

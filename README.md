@@ -34,7 +34,7 @@
 
 
 ```text
-[Workspace]
+[Project]
 ├── Workspace.swift
 ├── App/
 │    ├── {{ appName }}/
@@ -55,9 +55,16 @@
 │    └── {{ name }}Feature/
 │         ├── Project.swift
 │         ├── Interface/
+│         │    └── Sources/
 │         ├── Implementation/
-│         ├── Example/
-│         └── Resources/
+│         │    ├── Sources/
+│         │    └── Resources/
+│         ├── Testing/
+│         │    └── Sources/
+│         ├── Tests/
+│         │    └── Sources/
+│         └── Example/
+│              └── Sources/
 │     
 ├── Domain/
 │    ├── {{ name }}BaseDomain/
@@ -66,12 +73,17 @@
 │    ├── {{ name }}RepositoryInterfaces/
 │    │    ├── Project.swift
 │    │    └── {{ repositoryName }}RepositoryInterface/
+│    │         └── Sources/
 │    └── {{ name }}Domain/
 │         ├── Project.swift
 │         ├── Interface/
+│         │    └── Sources/
 │         ├── Implementation/
+│         │    └── Sources/
 │         ├── Testing/
-│         └── UnitTests/
+│         │    └── Sources/
+│         └── Tests/
+│              └── Sources/
 │     
 ├── Data/
 │    ├── {{ name }}BaseData/
@@ -80,17 +92,23 @@
 │    └── {{ name }}Data/
 │         ├── Project.swift
 │         ├── Interface/
+│         │    └── Sources/
 │         ├── Implementation/
+│         │    └── Sources/
 │         ├── Testing/
-│         └── UnitTests/
+│         │    └── Sources/
+│         └── Tests/
+│              └── Sources/
 │     
 ├── Infrastructure/
 │    └── {{ name }}Infrastructure/
 │         ├── Project.swift
 │         ├── Interface/
+│         │    └── Sources/
 │         ├── Implementation/
-│         ├── Testing/
-│         └── UnitTests/
+│         │    └── Sources/
+│         └── Tests/
+│              └── Sources/
 │     
 ├── Core/
 │    └── Core{{ name }}/
@@ -259,7 +277,7 @@ nonisolated(unsafe) let project: Project = .coordinatorInterface(moduleName: "na
 Represents a business feature or user-facing functionality. It typically includes Interface, Implementation, Example, and Resources directories.
 
 directory: `Feature/{{ name }}Feature`  
-use: `/Interface`, `/Implementation`, `/Example`, `/Resources`  
+use: `/Interface/Sources`, `/Implementation/Sources`, `/Implementation/Resources`, `/Testing/Sources`, `Tests/Sources`, `/Example/Sources`,
 dependable: `.coordinatorInterface`, `.domain`
 
 ```swift
@@ -282,7 +300,7 @@ nonisolated(unsafe) let project: Project = .feature(moduleName: "name")
 Contains the core business logic, such as use cases and domain entities, separated into interface and implementation.
 
 directory: `Domain/{{ name }}Domain`  
-use: `/Interface`, `/Implementation`, `/Testing`, `UnitTests`  
+use: `/Interface/Sources`, `/Implementation/Sources`, `/Testing/Sources`, `Tests/Sources`  
 dependable: `.baseDomain`, `.repositoryInterfaces`, `.data`
 
 ```swift
@@ -316,7 +334,7 @@ nonisolated(unsafe) let project: Project = .baseDomain(moduleName: "name")
 Contains shared domain entities or utilities that are reused across multiple domain modules.
 
 directory: `Domain/{{ name }}RepositoryInterfaces`  
-use: `/{repositoryName}RepositoryInterface`  
+use: `/{repositoryName}RepositoryInterface/Sources`  
 dependable: nil
 
 ```swift
@@ -346,7 +364,7 @@ nonisolated(unsafe) let project: Project = .repositoryInterfaces(
 Implements data access logic, typically fulfilling the contracts defined in the repository interfaces.
 
 directory: `Data/{{ name }}Data`  
-use: `/Interface`, `/Implementation`, `/Testing`, `UnitTests` 
+use: `/Interface/Sources`, `/Implementation/Sources`, `/Testing/Sources`, `Tests/Sources`
 dependable: `.baseData`, `.repositoryInterfaces`, `.infrastructure`
 
 ```swift
@@ -387,7 +405,7 @@ nonisolated(unsafe) let project: Project = .baseData(moduleName: "name")
 Handles cross-cutting concerns like logging, analytics, and external service integrations (e.g., Firebase, CoreData).
 
 directory: `Infrastructure/{{ name }}Infrastructure`  
-use: `/Interface`, `/Implementation`, `/Testing`, `UnitTests`  
+use: `/Interface/Sources`, `/Implementation/Sources`, `Tests/Sources`
 dependable: nil
 
 ```swift

@@ -1,0 +1,23 @@
+{% if author != "nil" and currentDate != "nil" %}
+//
+//  {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}FeatureTests.swift
+//  {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}Feature
+//
+{% include "license.stencil" %}
+
+{% endif %}
+/*
+
+//Example
+
+import Testing
+import XCTest
+import {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}FeatureImplemenation
+import {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}FeatureTesting
+
+@Suite("{{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}ServiceTests")
+struct {{ name[0] | uppercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}FeatureTests {
+    @Test func {{ name[0] | lowercase }}{% for i in 1...name.count %}{{ name[i] }}{% endfor %}FeatureTest() async throws { }
+}
+
+*/
