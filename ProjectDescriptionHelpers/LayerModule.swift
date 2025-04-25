@@ -86,7 +86,7 @@ public struct LayerModule {
     }
     
     public func toProject() -> ProjectDescription.Project {
-        let targets =  generateLayerModuleTargets()
+        let targets = generateLayerModuleTargets()
         return Project(name: projectName,
                        organizationName: organizationName,
                        options: options,
@@ -103,16 +103,31 @@ public struct LayerModule {
 
 extension LayerModule {
     private func generateLayerModuleTargets() -> [Target] {
-        return moduleType.layerModuleTargets.map { targetType in
-            let options = targetOptions[targetType.toSelection()] ?? targetOptions[.default] ?? LayerModuleTargetOption()
-            let layerModuleTarget = LayerModuleTarget(moduleName,
-                                                      moduleType: moduleType,
-                                                      targetType: targetType)
-            return layerModuleTarget.toTarget(appName: appName,
-                                              organizationName: organizationName,
-                                              options: options,
-                                              layerModuleDependencies: layerModuleDependencies,
-                                              targetDependencies: targetDependencies)
+        switch moduleType {
+        case .repositoryInterfaces:
+            return repositoryTargetNames?.map { repositoryName in
+                return generateTarget(.repositoryInterface(repositoryName),
+                                      targetType: .repositoryInterface(repositoryName))
+            } ?? []
+        default:
+            return moduleType.layerModuleTargets.map { targetType in
+                return generateTarget(targetType.toSelection(),
+                                      targetType: targetType)
+            }
         }
+        
+    }
+    
+    private func generateTarget(_ selection: LayerModuleTargetSelection,
+                                targetType: LayerModuleTargetType) -> Target {
+        let options = targetOptions[targetType.toSelection()] ?? targetOptions[.default] ?? LayerModuleTargetOption()
+        let layerModuleTarget = LayerModuleTarget(moduleName,
+                                                  moduleType: moduleType,
+                                                  targetType: targetType)
+        return layerModuleTarget.toTarget(appName: appName,
+                                          organizationName: organizationName,
+                                          options: options,
+                                          layerModuleDependencies: layerModuleDependencies,
+                                          targetDependencies: targetDependencies)
     }
 }

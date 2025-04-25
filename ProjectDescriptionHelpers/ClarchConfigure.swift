@@ -11,6 +11,7 @@ public final class ClarchConfiguration {
     private static let pathStrings: [String] = [
         "App/**",
         "Feature/**",
+        "Domain/**",
         "Data/**",
         "Infrastructure/**",
         "Core/**",

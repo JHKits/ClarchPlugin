@@ -43,7 +43,7 @@ let coordinatorTemplate = Template(
               templatePath: "./stencils/coordinator.stencil"),
         
         // Base Source Files
-        .file(path: "\(coordinatorBasePathString)/Sources/\(coordinatorCapitalizedName)coordinator.swift",
+        .file(path: "\(coordinatorBasePathString)/Sources/\(coordinatorCapitalizedName)Coordinator.swift",
               templatePath: "./stencils/Coordinator.swift.stencil")
     ]
 )
